@@ -1,4 +1,4 @@
-# akestoreapi.com Consumer App
+# fakestoreapi.com Consumer App
 
 This repository contains a Spring Boot project named **fakestore-api-consumer** that serves as a consumer for a FakeStore API. The project is built using Maven and includes controllers, a repository, a service, and exception handling.
 
