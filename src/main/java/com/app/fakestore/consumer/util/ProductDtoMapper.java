@@ -25,12 +25,25 @@ public class ProductDtoMapper {
 
     public static FakeStoreDto createFakeStoreDtoFromProduct(Product product) {
         FakeStoreDto fakeStoreDto = new FakeStoreDto();
-        fakeStoreDto.setId(product.getId());
-        fakeStoreDto.setCategory(product.getCategory().getName());
-        fakeStoreDto.setDescription(product.getDescription());
-        fakeStoreDto.setTitle(product.getTitle());
-        fakeStoreDto.setPrice(product.getPrice());
-        fakeStoreDto.setImage(product.getImageUrl());
+        mapProductFieldsToFakeStoreDto(product, fakeStoreDto);
         return fakeStoreDto;
+    }
+
+    public static void mapProductFieldsToFakeStoreDto(Product product, FakeStoreDto fakeStoreDto) {
+        if (product.getTitle() != null) {
+            fakeStoreDto.setTitle(product.getTitle());
+        }
+        if (product.getPrice() != null) {
+            fakeStoreDto.setPrice(product.getPrice());
+        }
+        if (product.getDescription() != null) {
+            fakeStoreDto.setDescription(product.getDescription());
+        }
+        if (product.getCategory() != null && product.getCategory().getName() != null) {
+            fakeStoreDto.setCategory(product.getCategory().getName());
+        }
+        if (product.getImageUrl() != null) {
+            fakeStoreDto.setImage(product.getImageUrl());
+        }
     }
 }

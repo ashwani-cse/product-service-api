@@ -1,4 +1,4 @@
-package com.app.fakestore.consumer.repository;
+package com.app.fakestore.consumer.client;
 
 import com.app.fakestore.consumer.exception.ApiException;
 import lombok.extern.slf4j.Slf4j;

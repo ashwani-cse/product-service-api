@@ -3,15 +3,11 @@ package com.app.fakestore.consumer.repository.impl;
 import com.app.fakestore.consumer.dto.FakeStoreDto;
 import com.app.fakestore.consumer.exception.ApiException;
 import com.app.fakestore.consumer.repository.FakeStoreProductRepository;
-import com.app.fakestore.consumer.repository.RestClientService;
+import com.app.fakestore.consumer.client.RestClientService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.client.RestClientException;
-import org.springframework.web.client.RestClientResponseException;
-import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -38,9 +34,9 @@ public class FakeStoreProductRepositoryImpl implements FakeStoreProductRepositor
     public FakeStoreDto getSingleProduct(Long id) {
         FakeStoreDto fakeStoreDto = (FakeStoreDto) restClientService.getObject(FAKE_STORE_URL + id, FakeStoreDto.class);
         if (Objects.isNull(fakeStoreDto)) {
-            String errorMessage = String.format("No product received for id: %d", id);
+            String errorMessage = String.format("Product not found for id: %d", id);
             log.error(errorMessage);
-            throw new ApiException(errorMessage, HttpStatus.NO_CONTENT.value());
+            throw new ApiException(errorMessage, HttpStatus.NOT_FOUND.value());
         }
         return fakeStoreDto;
     }
@@ -52,7 +48,7 @@ public class FakeStoreProductRepositoryImpl implements FakeStoreProductRepositor
         FakeStoreDto[] productList = responseEntity.getBody();
         if (Objects.isNull(productList)) {
             log.error("No response received from FakeStoreApi while getting all products.");
-            throw new ApiException("No response received", HttpStatus.NO_CONTENT.value());
+            throw new ApiException("No response received", HttpStatus.NOT_FOUND.value());
         }
         return Arrays.stream(productList)
                 .collect(Collectors.toList());
@@ -60,15 +56,48 @@ public class FakeStoreProductRepositoryImpl implements FakeStoreProductRepositor
 
     @Override
     public FakeStoreDto addProduct(FakeStoreDto dto) {
-        HttpEntity<FakeStoreDto> httpEntity = new HttpEntity<>(dto);
-        ResponseEntity<FakeStoreDto> responseEntity= (ResponseEntity<FakeStoreDto>)restClientService.invokeRequest(FAKE_STORE_URL, HttpMethod.POST, httpEntity, FakeStoreDto.class);
-        FakeStoreDto fakeStoreDto = responseEntity.getBody();
-        if(Objects.isNull(fakeStoreDto)){
+        FakeStoreDto fakeStoreDto = processProductHttpRequest(dto, HttpMethod.POST);
+        if (Objects.isNull(fakeStoreDto)) {
             log.error("Product not created in FakeStoreApi Server");
             throw new ApiException("Product not created in FakeStoreApi Server", HttpStatus.INTERNAL_SERVER_ERROR.value());
         }
         return fakeStoreDto;
     }
 
+    @Override
+    public FakeStoreDto updateProduct(FakeStoreDto dto) {
+        FakeStoreDto fakeStoreDto = processProductHttpRequest(dto, HttpMethod.PUT);
+        if (Objects.isNull(fakeStoreDto)) {
+            log.error("Product is not updated in FakeStoreApi Server");
+            throw new ApiException("Product is not update in FakeStoreApi Server", HttpStatus.INTERNAL_SERVER_ERROR.value());
+        }
+        return fakeStoreDto;
+    }
+
+    @Override
+    public FakeStoreDto replaceProduct(FakeStoreDto dto) {
+        FakeStoreDto fakeStoreDto = processProductHttpRequest(dto, HttpMethod.PATCH);
+        if (Objects.isNull(fakeStoreDto)) {
+            log.error("Product details are not updated in FakeStoreApi Server");
+            throw new ApiException("Product details are not updated in FakeStoreApi Server", HttpStatus.INTERNAL_SERVER_ERROR.value());
+        }
+        return fakeStoreDto;
+    }
+
+    @Override
+    public FakeStoreDto deleteProduct(Long id) {
+        FakeStoreDto fakeStoreDto = processProductHttpRequest(null, HttpMethod.DELETE, id);
+        if (Objects.isNull(fakeStoreDto)) {
+            log.error("Product is not deleted in FakeStoreApi Server successfully");
+            throw new ApiException("Product is not deleted in FakeStoreApi Server successfully", HttpStatus.INTERNAL_SERVER_ERROR.value());
+        }
+        return fakeStoreDto;
+    }
+
+    private FakeStoreDto processProductHttpRequest(FakeStoreDto dto, HttpMethod httpMethod, Object... uriVariables) {
+        HttpEntity<FakeStoreDto> httpEntity = new HttpEntity<>(dto);
+        ResponseEntity<FakeStoreDto> responseEntity = (ResponseEntity<FakeStoreDto>) restClientService.invokeRequest(FAKE_STORE_URL, httpMethod, httpEntity, FakeStoreDto.class, uriVariables);
+        return responseEntity.getBody();
+    }
 
 }

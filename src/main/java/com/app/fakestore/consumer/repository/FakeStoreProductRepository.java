@@ -12,4 +12,11 @@ public interface FakeStoreProductRepository {
     List<FakeStoreDto> getAllProductList();
 
     FakeStoreDto addProduct(FakeStoreDto dto);
+
+    FakeStoreDto updateProduct(FakeStoreDto dto);
+
+    FakeStoreDto replaceProduct(FakeStoreDto dto);
+
+    FakeStoreDto deleteProduct(Long id);
+
 }

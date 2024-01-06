@@ -1,6 +1,7 @@
 package com.app.fakestore.consumer.exception;
 
 import com.app.fakestore.consumer.dto.ErrorPayload;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -12,6 +13,7 @@ import org.springframework.web.client.RestClientResponseException;
  * Created on 05/01/24.
  */
 
+@Slf4j
 @RestControllerAdvice
 public class ExceptionHandlerAdvice {
 
@@ -22,6 +24,7 @@ public class ExceptionHandlerAdvice {
 
     @ExceptionHandler(ApiException.class)
     public ResponseEntity<ErrorPayload> handleApiException(ApiException exception) {
+        log.error("handleApiException: {}", exception.getMessage());
         return handlerException(exception.getCode(), exception.getMessage());
     }
 
@@ -29,6 +32,7 @@ public class ExceptionHandlerAdvice {
         ErrorPayload errorPayload = new ErrorPayload();
         errorPayload.setStatusCode(statusCode);
         errorPayload.setMessage(errorMessage);
+        log.error("handlerException: Error response returned: {}", errorPayload);
         return new ResponseEntity<>(errorPayload, HttpStatus.valueOf(statusCode));
     }
 }
