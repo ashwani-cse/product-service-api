@@ -28,6 +28,18 @@ public class ExceptionHandlerAdvice {
         return handlerException(exception.getCode(), exception.getMessage());
     }
 
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<ErrorPayload> handleBadRequestException(BadRequestException exception) {
+        log.error("handleBadRequestException: {}", exception.getMessage());
+        return handlerException(HttpStatus.BAD_REQUEST.value(), exception.getMessage());
+    }
+
+    @ExceptionHandler(ObjectNotFoundException.class)
+    public ResponseEntity<ErrorPayload> handleObjectNotFoundException(ObjectNotFoundException exception) {
+        log.error("handleObjectNotFoundException: {}", exception.getMessage());
+        return handlerException(HttpStatus.NOT_FOUND.value(), exception.getMessage());
+    }
+
     private ResponseEntity<ErrorPayload> handlerException(int statusCode, String errorMessage) {
         ErrorPayload errorPayload = new ErrorPayload();
         errorPayload.setStatusCode(statusCode);

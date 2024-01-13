@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: product-service
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  datasource:
+    url: jdbc:mysql://localhost:3306/product_service_api
+    username: 'product_service_api_user'
+    password: 'product_service_api_user'
+    driver-class-name: com.mysql.cj.jdbc.Driver

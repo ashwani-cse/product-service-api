@@ -60,6 +60,14 @@ The project consists of a Spring Boot application with the following components:
 - Project Lombok (optional)
 - Spring Boot Starter Test (for testing)
 
+## SQL Queries executed
+```mysql
+create database product_service_api;
+create user product_service_api_user IDENTIFIED BY 'product_service_api_user';
+GRANT ALL PRIVILEGES ON product_service_api.* TO product_service_api_user;
+SELECT user FROM mysql. user
+```
+
 
 ## Social Profile
 - [LinkedIn](https://www.linkedin.com/in/ashwanicse/)
