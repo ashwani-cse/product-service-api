@@ -1,15 +1,12 @@
 package com.app.fakestore.consumer.service.impl;
 
 import com.app.fakestore.consumer.constant.Constants;
-import com.app.fakestore.consumer.exception.ApiException;
 import com.app.fakestore.consumer.exception.BadRequestException;
 import com.app.fakestore.consumer.exception.ObjectNotFoundException;
 import com.app.fakestore.consumer.model.Category;
 import com.app.fakestore.consumer.repository.CategoryRepository;
 import com.app.fakestore.consumer.service.CategoryService;
-import com.app.fakestore.consumer.util.ApplicationUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,7 +33,7 @@ public class CategoryServiceImpl implements CategoryService {
         Optional<Category> optional = categoryRepository.findById(id);
         if(optional.isEmpty()){
             log.error("Category doesn't exist in database.");
-            throw new ObjectNotFoundException(Constants.CATEGORY_NOT_EXIST);
+            throw new ObjectNotFoundException(Constants.Category.NOT_EXIST);
         }
         return optional.get();
     }
@@ -46,7 +43,7 @@ public class CategoryServiceImpl implements CategoryService {
         Optional<Category> optional = categoryRepository.findByName(categoryName);
         if(optional.isEmpty()){
             log.error("Category doesn't exist in database.");
-            throw new ObjectNotFoundException(Constants.CATEGORY_NOT_EXIST);
+            throw new ObjectNotFoundException(Constants.Category.NOT_EXIST);
         }
         return optional.get();
     }

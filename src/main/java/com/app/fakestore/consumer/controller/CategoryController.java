@@ -1,11 +1,15 @@
 package com.app.fakestore.consumer.controller;
 
+import com.app.fakestore.consumer.constant.Constants;
 import com.app.fakestore.consumer.exception.ApiException;
 import com.app.fakestore.consumer.exception.BadRequestException;
 import com.app.fakestore.consumer.model.Category;
 import com.app.fakestore.consumer.model.Product;
 import com.app.fakestore.consumer.service.CategoryService;
 import com.app.fakestore.consumer.util.ApplicationUtil;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -51,7 +55,7 @@ public class CategoryController {
     }
 
     @PostMapping()
-    public ResponseEntity<List<Category>> addCategories(@RequestBody List<String> categories) {
+    public ResponseEntity<List<Category>> addCategories(@NotEmpty(message = Constants.Category.CATEGORIES_REQUIRED) @RequestBody List<String> categories) {
         if (ApplicationUtil.isEmpty(categories))
             throw new BadRequestException("Add at least one category");
         List<Category> list = categoryService.addCategories(categories);

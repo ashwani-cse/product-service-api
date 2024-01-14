@@ -21,11 +21,9 @@ public class Base {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @JsonIgnore
     private Long id;
-    @CreationTimestamp
     @Column(name = "CREATE_TIMESTAMP")
     @JsonIgnore
     private String createTimeStamp;
-    @UpdateTimestamp
     @Column(name = "UPDATE_TIMESTAMP")
     @JsonIgnore
     private String updateTimeStamp;

@@ -5,7 +5,7 @@ import com.app.fakestore.consumer.exception.ApiException;
 import com.app.fakestore.consumer.model.Product;
 import com.app.fakestore.consumer.repository.FakeStoreProductRepository;
 import com.app.fakestore.consumer.service.ProductService;
-import com.app.fakestore.consumer.util.ProductDtoMapper;
+import com.app.fakestore.consumer.util.ProductFieldMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -32,22 +32,22 @@ public class FakeStoreProductServiceImpl implements ProductService {
     @Override
     public Product getSingleProduct(Long id) {
         FakeStoreDto dto = fakeStoreProductRepository.getSingleProduct(id);
-        return ProductDtoMapper.createProductFromFakeStoreDto(dto);
+        return ProductFieldMapper.createProductFromFakeStoreDto(dto);
     }
 
     @Override
     public List<Product> getAllProductList() {
         List<FakeStoreDto> fakeStoreDtoList = fakeStoreProductRepository.getAllProductList();
         return fakeStoreDtoList.stream()
-                .map(ProductDtoMapper::createProductFromFakeStoreDto)
+                .map(ProductFieldMapper::createProductFromFakeStoreDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public Product addProduct(Product product) {
         FakeStoreDto fakeStoreDto = fakeStoreProductRepository.addProduct(
-                ProductDtoMapper.createFakeStoreDtoFromProduct(product));
-        return ProductDtoMapper.createProductFromFakeStoreDto(fakeStoreDto);
+                ProductFieldMapper.createFakeStoreDtoFromProduct(product));
+        return ProductFieldMapper.createProductFromFakeStoreDto(fakeStoreDto);
     }
 
     @Override
@@ -56,8 +56,8 @@ public class FakeStoreProductServiceImpl implements ProductService {
         if (Objects.isNull(product)) {
             log.error("Product doesn't exist!. Adding new entry in FakeStoreAPi");
         }
-        return ProductDtoMapper.createProductFromFakeStoreDto(fakeStoreProductRepository
-                .updateProduct(ProductDtoMapper.createFakeStoreDtoFromProduct(dto)));
+        return ProductFieldMapper.createProductFromFakeStoreDto(fakeStoreProductRepository
+                .updateProduct(ProductFieldMapper.createFakeStoreDtoFromProduct(dto)));
     }
 
     @Override
@@ -67,19 +67,19 @@ public class FakeStoreProductServiceImpl implements ProductService {
             log.error("Product doesn't exist in FakeStoreApi");
             throw new ApiException("Product doesn't exist", HttpStatus.NOT_FOUND.value());
         }
-        ProductDtoMapper.mapProductFieldsToFakeStoreDto(product, fakeStoreDto);
-        return ProductDtoMapper.createProductFromFakeStoreDto(fakeStoreProductRepository
+        ProductFieldMapper.mapProductFieldsToFakeStoreDto(product, fakeStoreDto);
+        return ProductFieldMapper.createProductFromFakeStoreDto(fakeStoreProductRepository
                 .updateProduct(fakeStoreDto));
     }
 
     @Override
-    public Product deleteProduct(Long id) {
+    public void deleteProduct(Long id) {
         FakeStoreDto fakeStoreDto = fakeStoreProductRepository.getSingleProduct(id);
         if (Objects.isNull(fakeStoreDto)) {
             log.error("Product doesn't exist in FakeStoreApi");
             throw new ApiException("Product doesn't exist", HttpStatus.NOT_FOUND.value());
         }
-        return ProductDtoMapper.createProductFromFakeStoreDto(
+        ProductFieldMapper.createProductFromFakeStoreDto(
                 fakeStoreProductRepository.deleteProduct(id));
     }
 

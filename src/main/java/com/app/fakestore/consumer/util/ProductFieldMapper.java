@@ -8,7 +8,25 @@ import com.app.fakestore.consumer.model.Product;
  * @author Ashwani Kumar
  * Created on 05/01/24.
  */
-public class ProductDtoMapper {
+public class ProductFieldMapper {
+
+    public static void mapProduct(Product source, Product target) {
+        if (source.getTitle() != null) {
+            target.setTitle(source.getTitle());
+        }
+        if (source.getPrice() != null) {
+            target.setPrice(source.getPrice());
+        }
+        if (source.getDescription() != null) {
+            target.setDescription(source.getDescription());
+        }
+        if (source.getCategory() != null ) {
+            target.setCategory(source.getCategory());
+        }
+        if (source.getImageUrl() != null) {
+            target.setImageUrl(source.getImageUrl());
+        }
+    }
 
     public static Product createProductFromFakeStoreDto(FakeStoreDto fakeStoreDto) {
         Product product = new Product();

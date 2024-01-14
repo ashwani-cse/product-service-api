@@ -1,9 +1,13 @@
 package com.app.fakestore.consumer.model;
 
+import com.app.fakestore.consumer.constant.Constants;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -18,16 +22,16 @@ import lombok.Setter;
 @Getter
 @Entity
 public class Product extends  Base{
-    @Column(name = "TITLE")
+    @NotBlank(message = Constants.Product.TITLE_REQUIRED)
     private String title;
-    @Column(name = "PRICE")
+    @NotNull(message = Constants.Product.PRICE_REQUIRED)
     private Double price;
+    @Valid
     @ManyToOne
     private Category category;
-    @Column(name = "DESCRIPTION")
     private String description;
     @Column(name = "IMAGE_URL")
     private String imageUrl;
-    @Column(name = "UUID")
+    @Column(name = "product_uuid")
     private String productUUID;
 }

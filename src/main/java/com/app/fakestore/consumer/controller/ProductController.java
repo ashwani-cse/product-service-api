@@ -2,6 +2,7 @@ package com.app.fakestore.consumer.controller;
 
 import com.app.fakestore.consumer.model.Product;
 import com.app.fakestore.consumer.service.ProductService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +27,7 @@ public class ProductController {
     @GetMapping()
     public ResponseEntity<List<Product>> getAllProducts() {
         List<Product> list = productService.getAllProductList();
-        if(list.isEmpty())
+        if (list.isEmpty())
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
@@ -38,26 +39,26 @@ public class ProductController {
     }
 
     @PostMapping()
-    public ResponseEntity<Product> addProduct(@RequestBody Product product) {
+    public ResponseEntity<Product> addProduct(@Valid @RequestBody Product product) {
         Product addedProduct = productService.addProduct(product);
         return new ResponseEntity<>(addedProduct, HttpStatus.CREATED);
     }
 
     @PatchMapping("/{id}")
     public ResponseEntity<Product> updateProduct(@PathVariable("id") Long id, @RequestBody Product product) {
-        product = productService.updateProduct(id, product);
+        product = productService.replaceProduct(id, product);
         return new ResponseEntity<>(product, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Product> replaceProduct(@PathVariable("id") Long id, @RequestBody Product product) {
-        product = productService.replaceProduct(id, product);
+        product = productService.updateProduct(id, product);
         return new ResponseEntity<>(product, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Product> deleteProduct(@PathVariable("id") Long id) {
-        Product product = productService.deleteProduct(id);
-        return new ResponseEntity<>(product, HttpStatus.OK);
+    public ResponseEntity<Void> deleteProduct(@PathVariable("id") Long id) {
+        productService.deleteProduct(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

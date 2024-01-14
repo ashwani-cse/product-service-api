@@ -1,11 +1,10 @@
 package com.app.fakestore.consumer.model;
 
+import com.app.fakestore.consumer.constant.Constants;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
-import org.hibernate.proxy.HibernateProxy;
-
-import java.util.Objects;
 
 /**
  * @author Ashwani Kumar
@@ -19,6 +18,8 @@ import java.util.Objects;
 @AllArgsConstructor
 @Entity
 public class Category extends Base {
+
+    @NotBlank(message = Constants.Category.REQUIRED)
     @Column(name = "NAME")
     private String name;
 
