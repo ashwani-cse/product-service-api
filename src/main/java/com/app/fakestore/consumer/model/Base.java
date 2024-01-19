@@ -18,7 +18,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 public class Base {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonIgnore
     private Long id;
     @Column(name = "CREATE_TIMESTAMP")

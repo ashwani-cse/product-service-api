@@ -8,11 +8,11 @@
         <version>3.2.1</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.app.fakestore.consumer</groupId>
-    <artifactId>fakestore-api-consumer</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <name>consuming-fakestore-api</name>
-    <description>consuming-fakestore-api</description>
+    <groupId>com.app.product.service</groupId>
+    <artifactId>product-service-api</artifactId>
+    <version>0.0.1</version>
+    <name>product-service-api</name>
+    <description>product-service-api</description>
     <properties>
         <java.version>17</java.version>
     </properties>
@@ -34,6 +34,17 @@
             <artifactId>mysql-connector-java</artifactId>
             <version>8.0.33</version>
         </dependency>
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+            <version>10.6.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-mysql</artifactId>
+            <version>10.6.0</version>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>

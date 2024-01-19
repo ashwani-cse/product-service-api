@@ -1,0 +1,2 @@
+ALTER TABLE product
+    ADD type VARCHAR(255) NULL;

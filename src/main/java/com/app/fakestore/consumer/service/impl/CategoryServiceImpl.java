@@ -57,7 +57,11 @@ public class CategoryServiceImpl implements CategoryService {
     public List<Category> addCategories(List<String> categories) {
         List<Category> list;
         try {
-            List<Category> collect = categories.stream().map(Category::new).collect(Collectors.toList());
+            List<Category> collect = categories.stream().map(catName->{
+                Category category = new Category();
+                category.setName(catName);
+                return category;
+            }).collect(Collectors.toList());
             list = categoryRepository.saveAll(collect);
         } catch (Exception e) {
             log.error("Error occurred while adding category: {}", e.getMessage());
