@@ -1,4 +1,4 @@
-CREATE TABLE category
+CREATE TABLE IF NOT EXISTS category
 (
     id               BIGINT NOT NULL AUTO_INCREMENT,
     create_timestamp VARCHAR(255) NULL,
@@ -8,7 +8,7 @@ CREATE TABLE category
     CONSTRAINT pk_category PRIMARY KEY (id)
 );
 
-CREATE TABLE product
+CREATE TABLE IF NOT EXISTS product
 (
     id               BIGINT NOT NULL AUTO_INCREMENT,
     create_timestamp VARCHAR(255) NULL,

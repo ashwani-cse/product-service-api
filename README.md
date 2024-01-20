@@ -51,26 +51,38 @@ The project consists of a Spring Boot application with the following components:
 
 ## SQL Queries executed
 ```mysql
-create database product_service_api;
-create user product_service_api_user IDENTIFIED BY 'product_service_api_user';
-GRANT ALL PRIVILEGES ON product_service_api.* TO product_service_api_user;
-SELECT user FROM mysql. user
+CREATE DATABASE IF NOT EXISTS product_service_flywaydb;
+CREATE USER IF NOT EXISTS product_service_flywaydb_user IDENTIFIED BY 'product_service_flywaydb_pass';
+GRANT ALL PRIVILEGES ON product_service_flywaydb.* TO product_service_flywaydb_user;
 ```
 #### Make some security changes before exposing application to user. Because you may be exposed to SQL injection attacks.
   - Command to revoke all the privileges from the user associated with the application:
      ```mysql
-      revoke all on product_service_api.* from 'product_service_api_user';
+      revoke all on product_service_flywaydb.* from 'product_service_flywaydb_user';
       ```
   - And give some necessary privileges to application to make changes to only data of the database.
      ```mysql
-      grant select, insert, delete, update on product_service_api.* to 'product_service_api_user';
+      grant select, insert, delete, update on product_service_flywaydb.* to 'product_service_flywaydb_user';
       ```
 #### When you want to make changes to the database:
--  Regrant permissions. 
+-  Re-grant permissions. 
 - Change the spring.jpa.hibernate.ddl-auto =  update
 - Re-run your applications.
-
+  
 Then repeat the two commands shown here to make your application safe for production use again. Better still, use a dedicated migration tool, such as Flyway or Liquibase.
+
+
+#### OWASP Dependency-Check tool :
+This is a popular open-source tool that helps identify project dependencies and check if they have known, publicly disclosed, vulnerabilities.
+To identify and report known vulnerabilities in the dependencies of a Maven-based project execute below command - 
+   ```bash
+    mvn dependency-check:check 
+   ```
+Note: Use the NVD API key for fast scanning.
+
+If you see any vulnerability, try to update with latest version of that dependency.
+In this project i found vulnerability with jackson-databind-core in 2.15.x versions. 
+So i updated pom with dependency management with latest jackson-databind core version.
 
 ## Social Profile
 - [LinkedIn](https://www.linkedin.com/in/ashwanicse/)

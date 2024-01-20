@@ -11,5 +11,5 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/product_service_flywaydb
     username: 'product_service_flywaydb_user'
-    password: 'product_service_flywaydb'
+    password: 'product_service_flywaydb_pass'
     driver-class-name: com.mysql.cj.jdbc.Driver

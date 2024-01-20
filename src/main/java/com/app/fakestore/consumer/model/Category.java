@@ -26,6 +26,7 @@ public class Category extends Base {
     @Column(name = "NAME")
     private String name;
     @OneToMany(mappedBy = "category")
+    @ToString.Exclude// to exclude lazy load fields from toString
     private List<Product> products;
 
 }
