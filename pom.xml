@@ -15,6 +15,7 @@
     <description>product-service-api</description>
     <properties>
         <java.version>17</java.version>
+        <nvd.key>${nvd_api_key}}</nvd.key>
     </properties>
 
     <dependencyManagement>
@@ -96,7 +97,7 @@
                 <artifactId>dependency-check-maven</artifactId>
                 <version>9.0.9</version>
                 <configuration>
-                    <nvdApiKey>d218adef-6f8b-423a-9522-60ee78528548</nvdApiKey>
+                    <nvdApiKey>${nvd.key}</nvdApiKey>
                 </configuration>
                 <executions>
                     <execution>

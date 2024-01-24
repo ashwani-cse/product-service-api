@@ -36,9 +36,9 @@ The project consists of a Spring Boot application with the following components:
 2. Build the project:
 
     ```bash
-    mvn clean install
+    mvn clean install -U
     ```
-
+-U: It is a optional to update snapshots and releases.
 3. Run the application:
 
     ```bash
@@ -83,6 +83,9 @@ Note: Use the NVD API key for fast scanning.
 If you see any vulnerability, try to update with latest version of that dependency.
 In this project i found vulnerability with jackson-databind-core in 2.15.x versions. 
 So i updated pom with dependency management with latest jackson-databind core version.
+
+Note: for github use to commit/push and pull
+create a token from developer settings then in-place of password enter that token. Because from 2021, password has disabled for security reason.
 
 ## Social Profile
 - [LinkedIn](https://www.linkedin.com/in/ashwanicse/)
