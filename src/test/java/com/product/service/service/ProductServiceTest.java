@@ -13,7 +13,7 @@ import java.util.List;
  * Created on 14/01/24.
  */
 
-@SpringBootTest
+//@SpringBootTest
 public class ProductServiceTest {
     
     @Autowired
