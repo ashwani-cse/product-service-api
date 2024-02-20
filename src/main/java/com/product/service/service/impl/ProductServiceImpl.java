@@ -100,6 +100,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void deleteProduct(Long id) {
+        productRepository.findById(id)
+                .orElseThrow(() -> new ObjectNotFoundException("Product doesn't exist in database"));
         productRepository.deleteById(id);
     }
 }

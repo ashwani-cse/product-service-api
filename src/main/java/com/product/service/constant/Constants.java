@@ -8,7 +8,7 @@ public final class Constants {
 
     public interface ApiSecurity {
 
-        String PATH = "ps";
+        String PATH = "api/v1";
         String INVALID_API_KEY = "Invalid API key";
         String X_API_KEY = "x-api-key";
         String KEY = "${api.key}";

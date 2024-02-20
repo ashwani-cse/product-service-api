@@ -5,6 +5,11 @@ api:
 spring:
   application:
     name: product-service
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8081
   jpa:
     show-sql: true
     hibernate:
@@ -17,3 +22,4 @@ spring:
     username: 'product_service_flywaydb_user'
     password: 'product_service_flywaydb_pass'
     driver-class-name: com.mysql.cj.jdbc.Driver
+
