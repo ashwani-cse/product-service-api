@@ -1,23 +1,31 @@
 server:
   port: ${PORT:8082}
+
+# we can also use api key for authentication b/w services
 api:
-  key: "test-key"
+  key: ${API_KEY:test-key}
 
 spring:
   application:
     name: product-service
+  profiles:
+    active: ${ACTIVE_PROFILE:oauth2} # basic-auth oauth2, apikey, mTLS
+
+# :- Uncomment when using jwt validation;, Instead of this we can use another approach we can use api-key / service account / mTLS certificate
   security:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:8081
+          issuer-uri: http://localhost:8081   # When a JWT is received, Spring Security will extract the issuer information from the token and compare it against the
+                                              # configured issuer URI. If they match, it proceeds with the validation process, which typically involves verifying the
+                                              #signature of the token and checking its expiration time, among other things.
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: validate
+      ddl-auto: ${HIBERNATE_DDL_AUTO:validate}
     properties:
       hibernate:
-        generate_statistics: true
+        generate_statistics: ${HIBERNATE_GENERATE_STATISTICS:false}
   datasource:
     url: jdbc:mysql://localhost:3306/product_service_flywaydb
     username: 'product_service_flywaydb_user'

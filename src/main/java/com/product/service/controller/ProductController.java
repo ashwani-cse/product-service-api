@@ -26,7 +26,7 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @GetMapping()
+    @GetMapping("/")
     public ResponseEntity<List<Product>> getAllProducts() {
         List<Product> list = productService.getAllProductList();
         if (list.isEmpty())

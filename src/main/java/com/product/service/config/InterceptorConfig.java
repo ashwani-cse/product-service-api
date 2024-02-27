@@ -2,6 +2,7 @@ package com.product.service.config;
 
 import com.product.service.security.HttpRequestInterceptor;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -20,9 +21,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * @author Ashwani Kumar
  * Created on 21/01/24.
  */
+
+@Profile("apikey")
 @Configuration
 public class InterceptorConfig implements WebMvcConfigurer {
 
+    // Custom interceptor for handling HTTP requests.
     private final HttpRequestInterceptor httpRequestInterceptor;
 
     public InterceptorConfig(HttpRequestInterceptor httpRequestInterceptor) {
@@ -38,7 +42,7 @@ public class InterceptorConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
 
         registry.addInterceptor(httpRequestInterceptor)
-                .addPathPatterns("/ps/**");
+                .addPathPatterns("/api/v1/**");
                // .excludePathPatterns("/admin/**");
     }
 }

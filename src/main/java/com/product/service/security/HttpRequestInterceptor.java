@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -12,6 +13,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
  * @author Ashwani Kumar
  * Created on 21/01/24.
  */
+@Profile("apikey")
 @Slf4j
 @Component
 public class HttpRequestInterceptor implements HandlerInterceptor {
@@ -19,6 +21,10 @@ public class HttpRequestInterceptor implements HandlerInterceptor {
     @Value(ApiSecurity.KEY)
     private String KEY;
 
+    /**
+     * This method is used to intercept the request before it reaches the controller method.
+     * It is used to check if the request has a valid API key in the header.
+     */
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String apiKey = request.getHeader(ApiSecurity.X_API_KEY);
