@@ -34,16 +34,31 @@ public class ProductController {
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
+    @GetMapping("/pagination")
+    public ResponseEntity<List<Product>> getAllProductsByPagination(@RequestParam int page, @RequestParam int size, @RequestParam String sortBy, @RequestParam String order) {
+        List<Product> list = productService.getAllProductList(page, size, sortBy, order);
+        if (list.isEmpty())
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Product> getProduct(@PathVariable("id") Long id) {
         Product product = productService.getSingleProduct(id);
         return new ResponseEntity<>(product, HttpStatus.OK);
     }
 
-    @PostMapping()
+    @PostMapping("/")
     public ResponseEntity<Product> addProduct(@Valid @RequestBody Product product) {
         Product addedProduct = productService.addProduct(product);
         return new ResponseEntity<>(addedProduct, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/bulk")
+    public ResponseEntity<List<Product>> addProduct(@Valid @RequestBody List<Product> products) {
+        products.forEach(productService::addProduct);
+        List<Product> list = productService.getAllProductList();
+        return new ResponseEntity<>(list, HttpStatus.CREATED);
     }
 
     @PatchMapping("/{id}")

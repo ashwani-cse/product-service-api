@@ -44,6 +44,11 @@ public class FakeStoreProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<Product> getAllProductList(int page, int size, String sortBy, String order) {
+        return null;
+    }
+
+    @Override
     public Product addProduct(Product product) {
         FakeStoreDto fakeStoreDto = fakeStoreProductRepository.addProduct(
                 ProductFieldMapper.createFakeStoreDtoFromProduct(product));

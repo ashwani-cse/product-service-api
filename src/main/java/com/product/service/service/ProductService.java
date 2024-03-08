@@ -10,6 +10,8 @@ public interface ProductService {
 
     List<Product> getAllProductList();
 
+    List<Product> getAllProductList(int page, int size, String sortBy, String order);
+
     Product addProduct(Product dto);
 
     Product updateProduct(Long id, Product dto);

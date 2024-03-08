@@ -10,6 +10,9 @@ import com.product.service.service.ProductService;
 import com.product.service.util.ProductFieldMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Primary;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -48,6 +51,25 @@ public class ProductServiceImpl implements ProductService {
     public List<Product> getAllProductList() {
         log.info("Getting all product list");
         return productRepository.findAll();
+    }
+
+    @Override
+    public List<Product> getAllProductList(int page, int size, String sortBy, String order) {
+        log.info("Getting all product list with pagination and sorting. Page: {}, Size: {}, SortBy: {}, Order: {}", page, size, sortBy, order);
+        Sort sort = getSort(sortBy, order);
+        PageRequest pageRequest = PageRequest.of(page, size, sort);
+        Page<Product> productPage = productRepository.findAll(pageRequest);
+        return productPage.getContent();
+    }
+
+    private Sort getSort(String sortBy, String order) {
+//        Sort sort = Sort.by(sortBy).descending();
+//        Sort sort =  Sort.by("price").ascending()
+//               .and(Sort.by("name").descending())
+//               .and(Sort.by("category").ascending());
+
+        Sort.Direction direction = order.equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
+        return Sort.by(direction, sortBy);
     }
 
     @Override
