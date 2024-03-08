@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 
 /**
@@ -32,6 +33,7 @@ public class SecurityConfig {
                         authorizeRequests
                                 .anyRequest().authenticated()
                 )
+                .csrf(AbstractHttpConfigurer::disable) // Disable CSRF protection, else it will give 403 forbidden
                .oauth2ResourceServer(oauth2ResourceServer -> // Configure OAuth 2.0 Resource Server support
                         oauth2ResourceServer
                                 .jwt(Customizer.withDefaults())

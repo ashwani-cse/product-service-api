@@ -1,9 +1,8 @@
 server:
   port: ${PORT:8082}
 
-# we can also use api key for authentication b/w services
 api:
-  key: ${API_KEY:test-key}
+  key: ${API_KEY}
 
 spring:
   application:
@@ -11,14 +10,11 @@ spring:
   profiles:
     active: ${ACTIVE_PROFILE:oauth2} # basic-auth oauth2, apikey, mTLS
 
-# :- Uncomment when using jwt validation;, Instead of this we can use another approach we can use api-key / service account / mTLS certificate
   security:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:8081   # When a JWT is received, Spring Security will extract the issuer information from the token and compare it against the
-                                              # configured issuer URI. If they match, it proceeds with the validation process, which typically involves verifying the
-                                              #signature of the token and checking its expiration time, among other things.
+          issuer-uri: ${JWT_ISSUER}
   jpa:
     show-sql: true
     hibernate:
@@ -27,13 +23,13 @@ spring:
       hibernate:
         generate_statistics: ${HIBERNATE_GENERATE_STATISTICS:false}
   datasource:
-    url: jdbc:mysql://localhost:3306/product_service_flywaydb
-    username: 'product_service_flywaydb_user'
-    password: 'product_service_flywaydb_pass'
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${PRODUCT_DB_URL}
+    username: ${PRODUCT_DB_USERNAME}
+    password: ${PRODUCT_DB_PASSWORD}
+    driver-class-name: ${PRODUCT_DB_DRIVER_CLASS_NAME}
 
 eureka:
   client:
     service-url:
-      defaultZone: "http://localhost:8088/eureka/"
+      defaultZone: ${SERVICE_REGISTRY_URL}
 

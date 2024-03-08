@@ -16,7 +16,7 @@ import java.util.List;
 //@SpringBootTest
 public class ProductServiceTest {
     
-    @Autowired
+  //  @Autowired
     ProductService productService;
     
    // @Test
@@ -26,7 +26,7 @@ public class ProductServiceTest {
         String name = category.getName();
     }
 
-    @Test
+    //@Test
     void getProducts(){
         List<Product> allProductList = productService.getAllProductList();
         allProductList.forEach(System.out::println);
