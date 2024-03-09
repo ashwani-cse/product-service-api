@@ -36,4 +36,10 @@ public class ExceptionHandlerAdvice {
         return handlerException(HttpStatus.NOT_FOUND.value(), exception.getMessage());
     }
 
+    @ExceptionHandler(CustomException.class)
+    public ResponseEntity<ErrorPayload> handleCustomException(CustomException exception) {
+        log.error("handleCustomException: {}", exception.getMessage());
+        return handlerException(HttpStatus.BAD_REQUEST.value(), exception.getMessage());
+    }
+
 }

@@ -1,6 +1,8 @@
 package com.product.service.service.impl;
 
 import com.product.service.constant.Constants;
+import com.product.service.enums.SortableFields;
+import com.product.service.exception.BadRequestException;
 import com.product.service.exception.ObjectNotFoundException;
 import com.product.service.model.Category;
 import com.product.service.model.Product;
@@ -68,8 +70,14 @@ public class ProductServiceImpl implements ProductService {
 //               .and(Sort.by("name").descending())
 //               .and(Sort.by("category").ascending());
 
-        Sort.Direction direction = order.equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
-        return Sort.by(direction, sortBy);
+        try {
+            SortableFields.valueOf(sortBy.toUpperCase());
+            Sort.Direction direction = Sort.Direction.valueOf(order.toUpperCase());
+            return Sort.by(direction, sortBy);
+        } catch (IllegalArgumentException e) {
+            log.error("Invalid sortBy: {} or orderBy: {}", sortBy, order);
+            throw new BadRequestException("Invalid sortBy or order field");
+        }
     }
 
     @Override
