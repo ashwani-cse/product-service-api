@@ -2,9 +2,14 @@ package com.product.service.controller;
 
 import static com.product.service.constant.Constants.ApiSecurity.PATH;
 
+import com.product.service.elastic_search.model.CategoryDocument;
+import com.product.service.elastic_search.model.ProductDocument;
+import com.product.service.elastic_search.service.ProductSearchService;
+import com.product.service.model.Category;
 import com.product.service.model.Product;
 import com.product.service.service.ProductService;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,14 +21,17 @@ import java.util.List;
  * Created on 03/01/24.
  */
 
+@Slf4j
 @RequestMapping(PATH + "/products")
 @RestController
 public class ProductController {
 
     private final ProductService productService;
+    private final ProductSearchService productSearchService;
 
-    public ProductController(ProductService productService) {
+    public ProductController(ProductService productService, ProductSearchService productSearchService) {
         this.productService = productService;
+        this.productSearchService = productSearchService;
     }
 
     @GetMapping("/")
@@ -51,6 +59,12 @@ public class ProductController {
     @PostMapping("/")
     public ResponseEntity<Product> addProduct(@Valid @RequestBody Product product) {
         Product addedProduct = productService.addProduct(product);
+        //add to elastic search index
+        try {
+            productSearchService.saveProduct(convertToProductDocument(addedProduct));
+        } catch (Exception e) {
+            log.error("Error while adding product to elastic search index: {}", e.getMessage());
+        }
         return new ResponseEntity<>(addedProduct, HttpStatus.CREATED);
     }
 
@@ -77,5 +91,29 @@ public class ProductController {
     public ResponseEntity<Void> deleteProduct(@PathVariable("id") Long id) {
         productService.deleteProduct(id);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    // Elastic Search APIs for ProductDocument starts here
+    @GetMapping("/elastic-search")
+    public ResponseEntity<ProductDocument> searchProduct(@RequestParam Long id) {
+        ProductDocument product = productSearchService.findById(id);
+        log.info("ProductDocument: {}", product);
+        return new ResponseEntity<>(product, HttpStatus.OK);
+    }
+
+    private ProductDocument convertToProductDocument(Product addedProduct) {
+        ProductDocument productDocument = new ProductDocument();
+        productDocument.setId(addedProduct.getId());
+        productDocument.setTitle(addedProduct.getTitle());
+        productDocument.setPrice(addedProduct.getPrice());
+        Category category = addedProduct.getCategory();
+        CategoryDocument categoryDocument = new CategoryDocument();
+        categoryDocument.setId(category.getId());
+        categoryDocument.setName(category.getName());
+        productDocument.setCategory(categoryDocument);
+        productDocument.setDescription(addedProduct.getDescription());
+        productDocument.setImageUrl(addedProduct.getImageUrl());
+        productDocument.setProductUUID(addedProduct.getProductUUID());
+        return productDocument;
     }
 }

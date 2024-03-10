@@ -11,6 +11,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.HandlerMethodValidationException;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 @Slf4j
@@ -47,6 +48,12 @@ public class ApiValidationExceptionHandler {
         BindingResult bindingResult = exception.getBindingResult();
         String message = bindingResult.getAllErrors().get(0).getDefaultMessage();
         return ErrorResponse.handlerException(HttpStatus.BAD_REQUEST.value(), message);
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<ErrorPayload> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException exception) {
+        log.error("handleMethodArgumentTypeMismatchException: {}", exception.getMessage());
+        return ErrorResponse.handlerException(HttpStatus.BAD_REQUEST.value(), exception.getMessage());
     }
 
     @ExceptionHandler(BadRequestException.class)

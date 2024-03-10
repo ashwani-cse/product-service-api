@@ -33,3 +33,7 @@ eureka:
     service-url:
       defaultZone: ${SERVICE_REGISTRY_URL}
 
+elasticsearch:
+  host: ${ELASTICSEARCH_HOST:localhost:9200}
+
+
